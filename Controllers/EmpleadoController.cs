@@ -3,6 +3,7 @@ using Dapper;
 using DesarrolloWeb.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace DesarrolloWeb.Controllers
 {
@@ -10,6 +11,7 @@ namespace DesarrolloWeb.Controllers
     [ApiController]
     public class EmpleadoController : ControllerBase
     {
+
         private readonly string connectionString;
 
         public EmpleadoController(IConfiguration configuration)
@@ -17,8 +19,8 @@ namespace DesarrolloWeb.Controllers
             connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        [HttpGet]
-        public async Task<ActionResult> GetEmpleado( string correo, string contraseña) {
+        [HttpGet("{Correo}/{password}")]
+        public async Task<ActionResult> GetEmpleado( string Correo, string password) {
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -29,8 +31,8 @@ namespace DesarrolloWeb.Controllers
                 // Crea el objeto anónimo con los parámetros necesarios
                 var parameters = new
                 {
-                    correo = correo,
-                    password = contraseña
+                    correo = Correo,
+                    password = password
                 };
 
                 // Ejecuta el procedimiento almacenado y mapea los resultados a un objeto Empleado
