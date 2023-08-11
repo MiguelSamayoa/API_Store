@@ -5,7 +5,7 @@ namespace DesarrolloWeb.Models
 
 {
     [Table("Detalle_Factura")]
-    public class Detalle_Factura
+    public class DetalleFactura
     {
         [Key]
         public int Id_Detalle { get; set; }
