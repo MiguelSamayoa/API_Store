@@ -42,7 +42,7 @@ namespace DesarrolloWeb.Controllers
 				using (var connection = new SqlConnection(connectionString))
 				{
 					connection.Open();
-
+					
 					var parameters = new
 					{
 						Id_Empleado = aperturaCaja.Id_Empleado,
@@ -52,7 +52,7 @@ namespace DesarrolloWeb.Controllers
 
 					await connection.ExecuteAsync("sp_AperturaCaja", parameters, commandType: CommandType.StoredProcedure);
 
-					var lista = connection.Query<AperturaCaja>("sp_VerUltimaAperturaCaja", commandType: CommandType.StoredProcedure).ToList();
+					var lista = (await connection.QueryAsync<AperturaCaja>("sp_VerUltimaAperturaCaja", commandType: CommandType.StoredProcedure)).ToList();
 					if (lista.Count > 0)
 					{
 						return lista[0];

@@ -16,6 +16,4 @@ namespace DesarrolloWeb.Models
         public string Correo_Cliente { get; set; }
         public string Direccion { get; set; }
     }
-
-
 }
