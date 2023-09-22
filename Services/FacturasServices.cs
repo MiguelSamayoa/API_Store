@@ -124,6 +124,8 @@ namespace DesarrolloWeb.Services
                 //    articulo = item.articulo,
                 //    PrecioTotal = listaTotales[ordenCompleta.Detalle.IndexOf(item)]
                 //};
+
+                //Chinga tu madre xd
                 var j = (await conexion.QueryAsync("InsertarDetalle", p, commandType: CommandType.StoredProcedure));
 
             }
