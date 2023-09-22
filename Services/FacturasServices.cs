@@ -112,25 +112,25 @@ namespace DesarrolloWeb.Services
                 Serie = GenerateRandomAlphaNumericString(10),
                 CostoTotal = i
             };
-            Factura facturaInsertada = (await conexion.QueryAsync<Factura>("", parametros)).First();
+            Factura facturaInsertada = (await conexion.QueryAsync<Factura>("SpInsertarFactura", parametros, commandType: CommandType.StoredProcedure)).First();
 
             foreach (var item in Factura.Detalles)
             {
 
-                //var p = new
-                //{
-                //    orden = idOrden.Id,
-                //    Cantidad = item.Cantidad,
-                //    articulo = item.articulo,
-                //    PrecioTotal = listaTotales[ordenCompleta.Detalle.IndexOf(item)]
-                //};
+                var p = new
+                {
+                    orden = facturaInsertada.No_Factura,
+                    Cantidad = item.Cantidad,
+                    articulo = item.Id_Producto,
+                    PrecioTotal = listaTotales[Factura.Detalles.IndexOf(item)]
+                };
 
                 //Chinga tu madre xd
-                var j = (await conexion.QueryAsync("InsertarDetalle", p, commandType: CommandType.StoredProcedure));
+                var j = (await conexion.QueryAsync("InsertarDetalleFactura", p, commandType: CommandType.StoredProcedure));
 
             }
 
-            return Ok();
+            return await GetFacturasConDetalleByID(facturaInsertada.No_Factura);
         }
     }
 }

@@ -12,5 +12,6 @@ namespace DesarrolloWeb.Models
         public string serie { get; set; }
         public int Id_Empleado { get; set; }
         public DateTime Fecha { get; set; }
+        public decimal Total { get; set; }
     }
 }
