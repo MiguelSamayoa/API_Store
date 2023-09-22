@@ -117,13 +117,13 @@ namespace DesarrolloWeb.Services
             foreach (var item in Factura.Detalles)
             {
 
-                var p = new
-                {
-                    orden = idOrden.Id,
-                    Cantidad = item.Cantidad,
-                    articulo = item.articulo,
-                    PrecioTotal = listaTotales[ordenCompleta.Detalle.IndexOf(item)]
-                };
+                //var p = new
+                //{
+                //    orden = idOrden.Id,
+                //    Cantidad = item.Cantidad,
+                //    articulo = item.articulo,
+                //    PrecioTotal = listaTotales[ordenCompleta.Detalle.IndexOf(item)]
+                //};
                 var j = (await conexion.QueryAsync("InsertarDetalle", p, commandType: CommandType.StoredProcedure));
 
             }
