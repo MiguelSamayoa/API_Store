@@ -13,5 +13,4 @@ namespace DesarrolloWeb.Models
         public int Id_Empleado { get; set; }
         public DateTime Fecha { get; set; }
     }
-
 }

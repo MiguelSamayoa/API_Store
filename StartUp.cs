@@ -1,4 +1,8 @@
-﻿namespace DesarrolloWeb
+﻿using DesarrolloWeb.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.OpenApi.Models;
+
+namespace DesarrolloWeb
 {
     public class StartUp
     {
@@ -11,6 +15,13 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+
+            services.AddAuthentication("Cookies")
+                .AddCookie("Cookies", options =>
+                {
+                    options.LoginPath = "/Login";
+                });
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAngularDevOrigin",
@@ -23,6 +34,23 @@
             services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
+            
+
+
+            // Registrar la instancia en el contenedor de inyección de dependencias
+            services.AddSingleton<ITipo_ProductoServices, TipoProductoServicesWithDapper>();
+
+            // Configurar AutoMapper y pasar la instancia
+
+            services.AddSingleton<IEmpleadoService, EmpleadoServicesWithDapper>();
+            services.AddSingleton<IProductosServices, ProductoServicioWhithDapper>();
+            services.AddSingleton<IProveedoresServices, ProveedoresServicesWithDapper>();
+            services.AddSingleton<IFacturasServices, FacturasServicesWhithDapper>();
+
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile(new AutoMapperProfiles(new TipoProductoServicesWithDapper(Configuration)));
+            });
             services.AddSwaggerGen();
         }
 
@@ -34,20 +62,24 @@
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Nombre de tu API V1");
+                });
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
         }
-        
+
+
     }
 }

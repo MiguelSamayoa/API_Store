@@ -16,5 +16,8 @@ namespace DesarrolloWeb.Models
         public string disponibilidad { get; set; }
         public int Id_Empleado { get; set; }
 
+        public string categoria { get; set; }
+        public string proveedor { get; set; }
+
     }
 }

@@ -52,10 +52,10 @@ namespace DesarrolloWeb.Controllers
 
 					await connection.ExecuteAsync("sp_AperturaCaja", parameters, commandType: CommandType.StoredProcedure);
 
-					var lista = (await connection.QueryAsync<AperturaCaja>("sp_VerUltimaAperturaCaja", commandType: CommandType.StoredProcedure)).ToList();
-					if (lista.Count > 0)
+					var lista = (await connection.QueryAsync<AperturaCaja>("sp_VerUltimaAperturaCaja", commandType: CommandType.StoredProcedure)).FirstOrDefault();
+					if (lista !=  null)
 					{
-						return lista[0];
+						return Ok(lista);
 					}
 					else
 					{

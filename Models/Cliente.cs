@@ -11,7 +11,7 @@ namespace DesarrolloWeb.Models
         public string Nombre_Cliente { get; set; }
         public string apellido_cliente { get; set; }
         public string dpi_cliente { get; set; }
-        public decimal telefono_cliente { get; set; }
+        public int telefono_cliente { get; set; }
         public string Nit { get; set; }
         public string Correo_Cliente { get; set; }
         public string Direccion { get; set; }

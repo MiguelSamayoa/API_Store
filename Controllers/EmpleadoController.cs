@@ -4,47 +4,55 @@ using DesarrolloWeb.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using Microsoft.AspNetCore.Components.Forms;
+using DesarrolloWeb.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using DesarrolloWeb.DTOs;
 
 namespace DesarrolloWeb.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmpleadoController : ControllerBase
+    public class EmpleadoController : Controller
     {
 
-        private readonly string connectionString;
+        private readonly IEmpleadoService servicioEmpleado;
 
-        public EmpleadoController(IConfiguration configuration)
+        public EmpleadoController(IConfiguration configuration, IEmpleadoService ServicioEmpleado)
         {
-            connectionString = configuration.GetConnectionString("DefaultConnection");
+            servicioEmpleado = ServicioEmpleado;
         }
 
-        [HttpGet("{Correo}/{password}")]
-        public async Task<ActionResult> GetEmpleado( string Correo, string password) {
-            using (var connection = new SqlConnection(connectionString))
+        [HttpPost("Login")]
+        public async Task<ActionResult> GetEmpleado( EmpleadoLogin empleado ) {
+
+            var existe = await servicioEmpleado.AutenticarEmpleado(empleado);
+            if (existe != null)
             {
-                connection.Open();
-
-                // Define el nombre del procedimiento almacenado
-                string procedureName = "SP_LoginEmpleado";
-
-                // Crea el objeto anónimo con los parámetros necesarios
-                var parameters = new
-                {
-                    correo = Correo,
-                    password = password
-                };
-
-                // Ejecuta el procedimiento almacenado y mapea los resultados a un objeto Empleado
-                var empleado = await connection.QueryFirstOrDefaultAsync<Empleado>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-
-                if (empleado == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(empleado);
+                await SetSession(empleado);
+                return Ok(existe);
             }
+            else return NotFound("Usuario no encontrado");
+        }
+
+        private async Task SetSession(EmpleadoLogin usuario)
+        {
+            List<Claim> c = new()
+                                {
+                                        new Claim(ClaimTypes.NameIdentifier, usuario.Correo)
+
+                                };
+
+            ClaimsIdentity ci = new(c, CookieAuthenticationDefaults.AuthenticationScheme);
+            AuthenticationProperties p = new()
+            {
+                AllowRefresh = true,
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1)
+            };
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(ci), p);
         }
     }
 }

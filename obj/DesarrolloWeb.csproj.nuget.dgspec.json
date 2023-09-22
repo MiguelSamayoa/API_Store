@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mikys\\OneDrive\\Documentos\\miProyecto_Compiladores\\DesarrolloWeb\\DesarrolloWeb.csproj": {}
+    "C:\\Users\\mikys\\OneDrive\\Documentos\\DesarrolloWeb\\DesarrolloWeb.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mikys\\OneDrive\\Documentos\\miProyecto_Compiladores\\DesarrolloWeb\\DesarrolloWeb.csproj": {
+    "C:\\Users\\mikys\\OneDrive\\Documentos\\DesarrolloWeb\\DesarrolloWeb.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mikys\\OneDrive\\Documentos\\miProyecto_Compiladores\\DesarrolloWeb\\DesarrolloWeb.csproj",
+        "projectUniqueName": "C:\\Users\\mikys\\OneDrive\\Documentos\\DesarrolloWeb\\DesarrolloWeb.csproj",
         "projectName": "DesarrolloWeb",
-        "projectPath": "C:\\Users\\mikys\\OneDrive\\Documentos\\miProyecto_Compiladores\\DesarrolloWeb\\DesarrolloWeb.csproj",
+        "projectPath": "C:\\Users\\mikys\\OneDrive\\Documentos\\DesarrolloWeb\\DesarrolloWeb.csproj",
         "packagesPath": "C:\\Users\\mikys\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mikys\\OneDrive\\Documentos\\miProyecto_Compiladores\\DesarrolloWeb\\obj\\",
+        "outputPath": "C:\\Users\\mikys\\OneDrive\\Documentos\\DesarrolloWeb\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\mikys\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
             "Dapper": {
               "target": "Package",
               "version": "[2.0.143, )"

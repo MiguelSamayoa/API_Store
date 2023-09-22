@@ -4,6 +4,8 @@ using DesarrolloWeb.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using Microsoft.AspNetCore.Components.Forms;
+using AutoMapper;
+using DesarrolloWeb.DTOs;
 
 namespace DesarrolloWeb.Controllers
 {
@@ -12,27 +14,31 @@ namespace DesarrolloWeb.Controllers
     public class ClienteController:ControllerBase
     {
         private readonly string connectionString;
+        private readonly IMapper mapper;
 
-        public ClienteController(IConfiguration configuration)
+        public ClienteController(IConfiguration configuration, IMapper mapper)
         {
             connectionString = configuration.GetConnectionString("DefaultConnection");
+            this.mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Cliente>>> GetCliente()
+        public async Task<ActionResult<IEnumerable<PersonaGenericoOut>>> GetCliente()
         {
             using (var connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
 
-                var clientes = connection.Query<Cliente>("SP_VerTodosClientes", commandType: CommandType.StoredProcedure).ToList();
+                var clientes = (await connection.QueryAsync<Cliente>("SP_VerTodosClientes", 
+                    commandType: CommandType.StoredProcedure)).ToList();
 
                 if (clientes == null || clientes.Count == 0)
                 {
                     return NotFound();
                 }
 
-                return clientes;
+                List<PersonaGenericoOut> p =  mapper.Map<List<PersonaGenericoOut>>(clientes);
+                return Ok(p);
             }
         }
 
@@ -48,7 +54,8 @@ namespace DesarrolloWeb.Controllers
                     id_empleado = Id
                 };
 
-                var clientes = connection.Query<Cliente>($"sp_BuscarClientePorID", parameters, commandType: CommandType.StoredProcedure).ToList();
+                var clientes = (await connection.QueryAsync<Cliente>($"sp_BuscarClientePorID", parameters,
+                    commandType: CommandType.StoredProcedure)).ToList();
 
                 if (clientes == null || clientes.Count == 0)
                 {
@@ -79,12 +86,12 @@ namespace DesarrolloWeb.Controllers
                         Direccion = cliente.Direccion
                     };
 
-                    await connection.ExecuteAsync("SP_InsertarCliente", parameters, commandType: CommandType.StoredProcedure);
+                    var lista = (await connection.QueryAsync<Cliente>("SP_InsertarCliente", parameters, commandType: CommandType.StoredProcedure)).FirstOrDefault();
 
-                    var lista = (await connection.QueryAsync<Cliente>("GetLastCliente", commandType: CommandType.StoredProcedure)).ToList();
-                    if (lista.Count > 0)
+  
+                    if (lista != null)
                     {
-                        return lista[0];
+                        return lista;
                     }
                     else
                     {
