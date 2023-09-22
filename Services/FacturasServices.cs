@@ -12,8 +12,8 @@ namespace DesarrolloWeb.Services
     {
         public Task<List<Factura>> GetFacturas();
         public Task<List<FacturaConDetalle>> GetFacturasConDetalle();
-        public Task<Factura> GetFacturaByID(int id);
-        public Task<FacturaConDetalle> GetFacturasConDetalleByID(int id);
+        public Task<Factura> GetFacturas(int id);
+        public Task<FacturaConDetalle> GetFacturasConDetalle(int id);
 
         public Task<FacturaConDetalle> PostFactura(CreacionFacturaWithDetalleDTO Factura );
     }
@@ -67,7 +67,7 @@ namespace DesarrolloWeb.Services
             return facturaConDetalles;
         }
 
-        public async Task<Factura> GetFacturaByID(int id)
+        public async Task<Factura> GetFacturas(int id)
         {
             using var conexion = new SqlConnection(ConnectionString);
 
@@ -76,7 +76,7 @@ namespace DesarrolloWeb.Services
             return facturas;
         }
 
-        public async Task<FacturaConDetalle> GetFacturasConDetalleByID(int id)
+        public async Task<FacturaConDetalle> GetFacturasConDetalle(int id)
         {
             using var conexion = new SqlConnection(ConnectionString);
             FacturaConDetalle facturaConDetalles = new FacturaConDetalle();

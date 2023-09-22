@@ -16,16 +16,10 @@ namespace DesarrolloWeb
         public void ConfigureServices(IServiceCollection services)
         {
 
-
-            services.AddAuthentication("Cookies")
-                .AddCookie("Cookies", options =>
-                {
-                    options.LoginPath = "/Login";
-                });
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAngularDevOrigin",
-                    builder => builder.WithOrigins("http://localhost:4200")
+                    builder => builder.AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials());
@@ -47,10 +41,7 @@ namespace DesarrolloWeb
             services.AddSingleton<IProveedoresServices, ProveedoresServicesWithDapper>();
             services.AddSingleton<IFacturasServices, FacturasServicesWhithDapper>();
 
-            services.AddAutoMapper(cfg =>
-            {
-                cfg.AddProfile(new AutoMapperProfiles(new TipoProductoServicesWithDapper(Configuration)));
-            });
+            services.AddAutoMapper();
             services.AddSwaggerGen();
         }
 
