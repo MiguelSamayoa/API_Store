@@ -130,7 +130,7 @@ namespace DesarrolloWeb.Services
 
             }
 
-            return await GetFacturasConDetalleByID(facturaInsertada.No_Factura);
+            return await GetFacturasConDetalle(facturaInsertada.No_Factura);
         }
     }
 }

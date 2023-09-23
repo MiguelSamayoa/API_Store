@@ -24,7 +24,8 @@ namespace DesarrolloWeb.Controllers
             if (facturas.Count == 0) return NotFound();
             return Ok(facturas);
         }
-        [HttpGet("ByID/{id}")]
+
+        [HttpGet("{id}")]
         public async Task<ActionResult<List<Factura>>> GetFacturas(int id)
         {
             Factura facturas = await facturasServices.GetFacturas(id);
@@ -33,7 +34,7 @@ namespace DesarrolloWeb.Controllers
             return Ok(facturas);
         }
 
-        [HttpGet("WithDetalles")]
+        [HttpGet("WithDetalle")]
         public async Task<ActionResult<List<FacturaConDetalle>>> GetFacturasWithDetalle()
         {
             List<FacturaConDetalle> facturas = await facturasServices.GetFacturasConDetalle();
@@ -42,7 +43,7 @@ namespace DesarrolloWeb.Controllers
             return Ok(facturas);
         }
 
-        [HttpGet("WithDetalleByID/{id}")]
+        [HttpGet("WithDetalle/{id}")]
         public async Task<ActionResult<List<FacturaConDetalle>>> GetFacturasWithDetalleByID(int id)
         {
             FacturaConDetalle facturas = await facturasServices.GetFacturasConDetalle(id);

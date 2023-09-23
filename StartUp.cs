@@ -19,7 +19,7 @@ namespace DesarrolloWeb
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAngularDevOrigin",
-                    builder => builder.AllowAnyOrigin()
+                    builder => builder.WithOrigins("http://localhost:4200")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials());
@@ -41,7 +41,7 @@ namespace DesarrolloWeb
             services.AddSingleton<IProveedoresServices, ProveedoresServicesWithDapper>();
             services.AddSingleton<IFacturasServices, FacturasServicesWhithDapper>();
 
-            services.AddAutoMapper();
+            services.AddAutoMapper(typeof(StartUp));
             services.AddSwaggerGen();
         }
 

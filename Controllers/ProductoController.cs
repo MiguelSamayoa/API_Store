@@ -16,20 +16,14 @@ namespace DesarrolloWeb.Controllers
     public class ProductoController : ControllerBase
     {
         private readonly IProductosServices productosServices;
-        private readonly ITipo_ProductoServices tipoProducto;
-        private readonly IProveedoresServices proveedoresServices;
         private readonly IMapper mapper;
 
-        public ProductoController(IProductosServices productosServices, 
-                                    ITipo_ProductoServices TipoProducto, 
-                                    IProveedoresServices proveedoresServices,
-                                    IMapper mapper)
+        public ProductoController(IProductosServices productosServices, IMapper mapper)
         {
             this.productosServices = productosServices;
-            tipoProducto = TipoProducto;
-            this.proveedoresServices = proveedoresServices;
             this.mapper = mapper;
         }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductoOutDTO>>> GetAll()
         {

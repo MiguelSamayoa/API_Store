@@ -8,10 +8,15 @@ namespace DesarrolloWeb.Services
     public interface IProductosServices
     {
         public Task<List<Producto>> getProductos();
+
         public Task<Producto> GetProducto(int Id_Producto);
+
         public Task<Producto> setProducto(Producto producto);
+
         public Task<List<Producto>> getProductosWithData();
     }
+
+    //*---------------------------------------------------
 
     public class ProductoServicioWhithDapper : IProductosServices
     {

@@ -6,5 +6,12 @@ namespace DesarrolloWeb.DTOs
     {
         public Factura Factura { get; set; }
         public List<DetalleFactura> Detalles { get; set; }
+
+        public FacturaConDetalle(){}
+        public FacturaConDetalle(Factura factura, List<DetalleFactura> Detalles)
+        {
+            Factura = factura;
+            this.Detalles = Detalles;
+        }
     }
 }
