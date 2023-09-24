@@ -10,9 +10,7 @@ namespace DesarrolloWeb
 {
     public class AutoMapperProfiles: Profile
     {
-        private readonly ITipo_ProductoServices tipoServices;
-
-        public AutoMapperProfiles( ITipo_ProductoServices tipoServices)
+        public AutoMapperProfiles()
         {
             CreateMap<Cliente, PersonaGenericoOut>()
                 .ForMember(cliente => cliente.ID, op => op.MapFrom(PersonaID))

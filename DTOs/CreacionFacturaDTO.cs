@@ -16,7 +16,6 @@ namespace DesarrolloWeb.DTOs
 
     public class CreacionDetalleDTO
     {
-        public int No_Factura { get; set; }
         public int Id_Producto { get; set; }
         public int Cantidad { get; set; }
     }

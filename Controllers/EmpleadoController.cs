@@ -30,7 +30,6 @@ namespace DesarrolloWeb.Controllers
             var existe = await servicioEmpleado.AutenticarEmpleado(empleado);
             if (existe != null)
             {
-                await SetSession(empleado);
                 return Ok(existe);
             }
             else return NotFound("Usuario no encontrado");
