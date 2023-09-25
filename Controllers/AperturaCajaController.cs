@@ -3,6 +3,8 @@ using Dapper;
 using DesarrolloWeb.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using DesarrolloWeb.Services;
+using DesarrolloWeb.DTOs;
 
 namespace DesarrolloWeb.Controllers
 {
@@ -10,66 +12,31 @@ namespace DesarrolloWeb.Controllers
 	[ApiController]
 	public class AperturaCajaController:ControllerBase
 	{
-		private readonly string connectionString;
+        private readonly IAperturaCajaServices aperturaServices;
 
-		public AperturaCajaController(IConfiguration configuration)
+        public AperturaCajaController( IAperturaCajaServices ApeerturaServices )
 		{
-			connectionString = configuration.GetConnectionString("DefaultConnection");
-		}
+            aperturaServices = ApeerturaServices;
+        }
 
 		[HttpGet]
 		public async Task<ActionResult<List<AperturaCaja>>> GetAperturas()
 		{
-			using (var connection = new SqlConnection(connectionString))
-			{
-				connection.Open();
-				var Aperturas = await connection.QueryAsync<AperturaCaja>("sp_VerAperturas", commandType: CommandType.StoredProcedure);
-				
-				if (Aperturas == null)
-				{
-					return NotFound();
-				}
-				return Ok(Aperturas);
+			List<AperturaCaja> lista = await aperturaServices.GetAperturaCaja();
 
-			}
-		}
+			if(lista == null) return NotFound("Cinga tu madre xd");
+
+			return Ok(lista);
+        }
 
 		[HttpPost]
-		public async Task<ActionResult<AperturaCaja>> PostAperturaCaja(AperturaCaja aperturaCaja)
+		public async Task<ActionResult<AperturaCaja>> PostAperturaCaja(AperturaCajaDTO aperturaCaja)
 		{
-			try
-			{
-				using (var connection = new SqlConnection(connectionString))
-				{
-					connection.Open();
-					
-					var parameters = new
-					{
-						Id_Empleado = aperturaCaja.Id_Empleado,
-						Fecha_Hora = aperturaCaja.Fecha_Hora,
-						Saldo = aperturaCaja.Saldo
-					};
+			AperturaCaja apertura = await aperturaServices.PostApertura(aperturaCaja);
 
-					await connection.ExecuteAsync("sp_AperturaCaja", parameters, commandType: CommandType.StoredProcedure);
+			if(apertura == null) return NotFound("Chinga tu madre");
 
-					var lista = (await connection.QueryAsync<AperturaCaja>("sp_VerUltimaAperturaCaja", commandType: CommandType.StoredProcedure)).FirstOrDefault();
-					if (lista !=  null)
-					{
-						return Ok(lista);
-					}
-					else
-					{
-						return NotFound();
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				// Manejo de errores
-				return StatusCode(500, ex.Message);
-			}
-		}
-
-
+			return Ok(apertura);
+        }
 	}
 }
