@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mikys\\OneDrive\\Documentos\\DesarrolloWeb\\DesarrolloWeb.csproj": {}
+    "C:\\Users\\jireh\\OneDrive\\Documentos\\ProyectoWeb\\DesarrolloWeb.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mikys\\OneDrive\\Documentos\\DesarrolloWeb\\DesarrolloWeb.csproj": {
+    "C:\\Users\\jireh\\OneDrive\\Documentos\\ProyectoWeb\\DesarrolloWeb.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mikys\\OneDrive\\Documentos\\DesarrolloWeb\\DesarrolloWeb.csproj",
+        "projectUniqueName": "C:\\Users\\jireh\\OneDrive\\Documentos\\ProyectoWeb\\DesarrolloWeb.csproj",
         "projectName": "DesarrolloWeb",
-        "projectPath": "C:\\Users\\mikys\\OneDrive\\Documentos\\DesarrolloWeb\\DesarrolloWeb.csproj",
-        "packagesPath": "C:\\Users\\mikys\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mikys\\OneDrive\\Documentos\\DesarrolloWeb\\obj\\",
+        "projectPath": "C:\\Users\\jireh\\OneDrive\\Documentos\\ProyectoWeb\\DesarrolloWeb.csproj",
+        "packagesPath": "C:\\Users\\jireh\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jireh\\OneDrive\\Documentos\\ProyectoWeb\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\mikys\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\jireh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -76,7 +80,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

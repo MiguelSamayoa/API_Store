@@ -10,7 +10,7 @@ namespace DesarrolloWeb.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class AperturaCajaController:ControllerBase
+	public class AperturaCajaController:Controller
 	{
         private readonly IAperturaCajaServices aperturaServices;
 

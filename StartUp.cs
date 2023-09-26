@@ -37,13 +37,13 @@ namespace DesarrolloWeb
             services.AddSingleton<IProductosServices, ProductoServicioWhithDapper>();
             services.AddSingleton<IProveedoresServices, ProveedoresServicesWithDapper>();
             services.AddSingleton<IFacturasServices, FacturasServicesWhithDapper>();
-
+            services.AddSingleton<ITipoDePagoServices, TipoPagoServicesWhithDapper>();
             services.AddSingleton< IAperturaCajaServices, AperturaCajaServicesWithDappper >();
 
             services.AddAutoMapper(typeof(StartUp));
             services.AddSwaggerGen();
         }
-
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseCors("AllowAngularDevOrigin");
