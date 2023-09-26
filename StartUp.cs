@@ -33,18 +33,17 @@ namespace DesarrolloWeb
 
             // Registrar la instancia en el contenedor de inyección de dependencias
             services.AddSingleton<ITipo_ProductoServices, TipoProductoServicesWithDapper>();
-
-            // Configurar AutoMapper y pasar la instancia
-
             services.AddSingleton<IEmpleadoService, EmpleadoServicesWithDapper>();
             services.AddSingleton<IProductosServices, ProductoServicioWhithDapper>();
             services.AddSingleton<IProveedoresServices, ProveedoresServicesWithDapper>();
             services.AddSingleton<IFacturasServices, FacturasServicesWhithDapper>();
+            services.AddSingleton<ITipoDePagoServices, TipoPagoServicesWhithDapper>();
+            services.AddSingleton< IAperturaCajaServices, AperturaCajaServicesWithDappper >();
 
             services.AddAutoMapper(typeof(StartUp));
             services.AddSwaggerGen();
         }
-
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseCors("AllowAngularDevOrigin");
