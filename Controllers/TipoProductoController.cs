@@ -14,10 +14,10 @@ namespace DesarrolloWeb.Controllers
             TipoServices = tipo_ProductoServices;
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<List<TipoProducto>>> GetById(int id)
+        [HttpGet]
+        public async Task<ActionResult<List<TipoProducto>>> GetAll()
         {
-            var x = await TipoServices.GetTipoById(id);
+            var x = await TipoServices.GetAll();
             if (x != null) return Ok(x);
             return NotFound("Categoria no encontrada");
         }
