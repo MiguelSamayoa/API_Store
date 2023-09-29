@@ -16,7 +16,9 @@ namespace DesarrolloWeb
                 .ForMember(cliente => cliente.ID, op => op.MapFrom(PersonaID))
                 .ForMember(cliente => cliente.Nombre, op => op.MapFrom(PersonaNombre))
                 .ForMember(cliente => cliente.dpi, op => op.MapFrom(PersonaDpi))
-                .ForMember(cliente => cliente.Correo, op => op.MapFrom(PersonaCorreo));
+                .ForMember(cliente => cliente.Correo, op => op.MapFrom(PersonaCorreo))
+                .ForMember(cliente => cliente.Telefono, op => op.MapFrom(PersonaTelefono));
+
             CreateMap<Producto, ProductoOutDTO>()
                 .ForMember(p => p.id, op => op.MapFrom(ProductoId))
                 .ForMember(p => p.nombre, op => op.MapFrom(ProductoNombre))
@@ -40,6 +42,8 @@ namespace DesarrolloWeb
         private string PersonaDpi(Cliente cliente, PersonaGenericoOut persona) { return cliente.dpi_cliente; }
 
         private string PersonaCorreo(Cliente cliente, PersonaGenericoOut persona) { return cliente.Correo_Cliente; }
+
+        private string PersonaTelefono(Cliente cliente, PersonaGenericoOut persona) { return (cliente.telefono_cliente).ToString(); }
 
         //------------------------------------------------------------------------------
 

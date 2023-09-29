@@ -8,5 +8,6 @@
         public string Correo { get; set; }
         public string Nit { get; set; }
         public string Direccion { get; set; }
+        public int Telefono { get; set; }
     }
 }
