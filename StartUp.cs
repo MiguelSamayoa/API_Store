@@ -39,7 +39,7 @@ namespace DesarrolloWeb
             services.AddSingleton<IFacturasServices, FacturasServicesWhithDapper>();
             services.AddSingleton<ITipoDePagoServices, TipoPagoServicesWhithDapper>();
             services.AddSingleton< IAperturaCajaServices, AperturaCajaServicesWithDappper >();
-
+            services.AddSingleton<IMonedaServices, MonedaServicesWhitDapper>();
             services.AddAutoMapper(typeof(StartUp));
             services.AddSwaggerGen();
         }
