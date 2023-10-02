@@ -70,6 +70,7 @@ namespace DesarrolloWeb.Services
         public async Task<Factura> GetFacturas(int id)
         {
             using var conexion = new SqlConnection(ConnectionString);
+            conexion.Open();
 
             Factura facturas = (await conexion.QueryAsync<Factura>($"select * from Factura where No_Factura = '{id}'")).First();
 
@@ -79,6 +80,7 @@ namespace DesarrolloWeb.Services
         public async Task<FacturaConDetalle> GetFacturasConDetalle(int id)
         {
             using var conexion = new SqlConnection(ConnectionString);
+            conexion.Open();
             FacturaConDetalle facturaConDetalles = new FacturaConDetalle();
             Factura factura = (await conexion.QueryAsync<Factura>($"select * from Factura where No_Factura = '{id}'")).First();
             List<DetalleFactura> detalles = (await conexion.QueryAsync<DetalleFactura>("select * from Detalle_Factura")).ToList();
@@ -93,6 +95,7 @@ namespace DesarrolloWeb.Services
         public async Task<FacturaConDetalle> PostFactura(CreacionFacturaWithDetalleDTO Factura)
         {
             using var conexion = new SqlConnection(ConnectionString);
+            conexion.Open();
 
             Decimal i = 0;
             List<string> listaTotales = new List<string>();
