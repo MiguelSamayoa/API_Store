@@ -44,18 +44,18 @@ namespace DesarrolloWeb.Controllers
         }
 
         [HttpGet("WithDetalle/{id}")]
-        public async Task<ActionResult<List<FacturaConDetalle>>> GetFacturasWithDetalleByID(int id)
+        public async Task<ActionResult<List<FacturaConDetalleWithData>>> GetFacturasWithDetalleByID(int id)
         {
-            FacturaConDetalle facturas = await facturasServices.GetFacturasConDetalle(id);
+            FacturaConDetalleWithData facturas = await facturasServices.GetFacturasConDetalle(id);
 
             if (facturas == null) return NotFound();
             return Ok(facturas);
         }
 
         [HttpPost]
-        public async Task<ActionResult<FacturaConDetalle>> PostFactura(CreacionFacturaWithDetalleDTO Factura)
+        public async Task<ActionResult<FacturaConDetalleWithData>> PostFactura(CreacionFacturaWithDetalleDTO Factura)
         {
-            FacturaConDetalle factura = await facturasServices.PostFactura(Factura);
+            FacturaConDetalleWithData factura = await facturasServices.PostFactura(Factura);
             return factura;
         }
 
