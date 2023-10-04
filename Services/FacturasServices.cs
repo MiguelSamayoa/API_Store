@@ -13,9 +13,9 @@ namespace DesarrolloWeb.Services
         public Task<List<Factura>> GetFacturas();
         public Task<List<FacturaConDetalle>> GetFacturasConDetalle();
         public Task<Factura> GetFacturas(int id);
-        public Task<FacturaConDetalle> GetFacturasConDetalle(int id);
+        public Task<FacturaConDetalleWithData> GetFacturasConDetalle(int id);
 
-        public Task<FacturaConDetalle> PostFactura(CreacionFacturaWithDetalleDTO Factura );
+        public Task<FacturaConDetalleWithData> PostFactura(CreacionFacturaWithDetalleDTO Factura );
     }
 
     public class FacturasServicesWhithDapper : IFacturasServices
@@ -76,32 +76,32 @@ namespace DesarrolloWeb.Services
             return facturas;
         }
 
-        public async Task<FacturaConDetalle> GetFacturasConDetalle(int id)
+        public async Task<FacturaConDetalleWithData> GetFacturasConDetalle(int id)
         {
             using var conexion = new SqlConnection(ConnectionString);
-            FacturaConDetalle facturaConDetalles = new FacturaConDetalle();
+            FacturaConDetalleWithData facturaConDetalles = new FacturaConDetalleWithData();
             Factura factura = (await conexion.QueryAsync<Factura>($"select * from Factura where No_Factura = '{id}'")).First();
-            List<DetalleFactura> detalles = (await conexion.QueryAsync<DetalleFactura>("select * from Detalle_Factura")).ToList();
+            List<DetalleWithDataDTO> detalles = (await conexion.QueryAsync<DetalleWithDataDTO>("Sp_VerDetallesByIDwhithProducto",
+                new { id }, commandType: CommandType.StoredProcedure))
+                .ToList();
 
-            List<DetalleFactura> detalleFactura = detalles.Where(det => det.No_Factura == factura.No_Factura).ToList();
-
-            if (detalleFactura.Count > 0) facturaConDetalles = new FacturaConDetalle(factura, detalleFactura);
+            if (detalles.Count > 0) facturaConDetalles = new FacturaConDetalleWithData(factura, detalles);
 
             return facturaConDetalles;
         }
 
-        public async Task<FacturaConDetalle> PostFactura(CreacionFacturaWithDetalleDTO Factura)
+        public async Task<FacturaConDetalleWithData> PostFactura(CreacionFacturaWithDetalleDTO Factura)
         {
             using var conexion = new SqlConnection(ConnectionString);
-
+            conexion.Open();
             Decimal i = 0;
-            List<string> listaTotales = new List<string>();
+            List<Decimal> listaTotales = new List<Decimal>();
             foreach (var item in Factura.Detalles)
             {
 
                 Producto j = (await conexion.QueryAsync<Producto>($"select * from Producto where Id_Producto = {item.Id_Producto}")).FirstOrDefault();
 
-                listaTotales.Add((j.precio_Producto * item.Cantidad).ToString());
+                listaTotales.Add((j.precio_Producto * item.Cantidad));
                 i += j.precio_Producto * item.Cantidad;
             }
 
