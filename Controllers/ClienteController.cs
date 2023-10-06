@@ -6,6 +6,7 @@ using System.Data;
 using Microsoft.AspNetCore.Components.Forms;
 using AutoMapper;
 using DesarrolloWeb.DTOs;
+using DesarrolloWeb.Services;
 
 namespace DesarrolloWeb.Controllers
 {
@@ -13,91 +14,43 @@ namespace DesarrolloWeb.Controllers
     [ApiController]
     public class ClienteController:ControllerBase
     {
-        private readonly string connectionString;
-        private readonly IMapper mapper;
+        private readonly IClienteServices clientesServices;
 
-        public ClienteController(IConfiguration configuration, IMapper mapper)
+        public ClienteController(IClienteServices ClientesServices)
         {
-            connectionString = configuration.GetConnectionString("DefaultConnection");
-            this.mapper = mapper;
+            clientesServices = ClientesServices;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PersonaGenericoOut>>> GetCliente()
+        public async Task<ActionResult<List<PersonaGenericoOut>>> GetCliente()
         {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
+            List<PersonaGenericoOut> personas = await clientesServices.GetCliente();
 
-                var clientes = (await connection.QueryAsync<Cliente>("SP_VerTodosClientes", 
-                    commandType: CommandType.StoredProcedure)).ToList();
+            if (personas.Count == 0) return NotFound("No hay clientes");
 
-                if (clientes == null || clientes.Count == 0)
-                {
-                    return NotFound();
-                }
-
-                List<PersonaGenericoOut> p =  mapper.Map<List<PersonaGenericoOut>>(clientes);
-                return Ok(p);
-            }
+            return Ok(personas);
         }
 
         [HttpGet("{Id}")]
-        public async Task<ActionResult<IEnumerable<Cliente>>> GetClienteID(int Id)
+        public async Task<ActionResult<PersonaGenericoOut>> GetClienteID(int Id)
         {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
+            PersonaGenericoOut personas = await clientesServices.GetClienteID(Id);
 
-                var parameters = new
-                {
-                    id_empleado = Id
-                };
+            if (personas == null) return NotFound("No existe el cliente");
 
-                var clientes = (await connection.QueryAsync<Cliente>($"sp_BuscarClientePorID", parameters,
-                    commandType: CommandType.StoredProcedure)).ToList();
-
-                if (clientes == null || clientes.Count == 0)
-                {
-                    return NotFound();
-                }
-
-                return clientes;
-            }
+            return personas;
         }
 
         [HttpPost]
-        public async Task<ActionResult<Cliente>> PostCliente(Cliente cliente)
+        public async Task<ActionResult<PersonaGenericoOut>> PostCliente(PersonaGenericoOut cliente)
         {
             try
             {
-                using (var connection = new SqlConnection(connectionString))
-                {
-                    await connection.OpenAsync();
+                PersonaGenericoOut PersonaIngresada = await clientesServices.PostCliente(cliente);
 
-                    var parameters = new
-                    {
-                        Nombre_Cliente = cliente.Nombre_Cliente,
-                        apellido_cliente = cliente.apellido_cliente,
-                        dpi_cliente = cliente.dpi_cliente,
-                        Nit = cliente.Nit,
-                        telefono_cliente = cliente.telefono_cliente,
-                        Correo_Cliente = cliente.Correo_Cliente,
-                        Direccion = cliente.Direccion
-                    };
+                if (PersonaIngresada == null) return NotFound();
 
-                    var lista = (await connection.QueryAsync<Cliente>("SP_InsertarCliente", parameters, commandType: CommandType.StoredProcedure)).FirstOrDefault();
-
-  
-                    if (lista != null)
-                    {
-                        return lista;
-                    }
-                    else
-                    {
-                        return NotFound("Elemento No Encontrdo");
-                    }
-                }
+                return Ok(PersonaIngresada);
             }
             catch (Exception ex)
             {

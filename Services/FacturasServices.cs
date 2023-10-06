@@ -15,6 +15,8 @@ namespace DesarrolloWeb.Services
         public Task<Factura> GetFacturas(int id);
         public Task<FacturaConDetalleWithData> GetFacturasConDetalle(int id);
 
+        public Task<List<FacturaConDetalleWithData>> GetFacturasToday();
+
         public Task<FacturaConDetalleWithData> PostFactura(CreacionFacturaWithDetalleDTO Factura );
     }
 
@@ -90,6 +92,8 @@ namespace DesarrolloWeb.Services
             return facturaConDetalles;
         }
 
+
+
         public async Task<FacturaConDetalleWithData> PostFactura(CreacionFacturaWithDetalleDTO Factura)
         {
             using var conexion = new SqlConnection(ConnectionString);
@@ -131,6 +135,25 @@ namespace DesarrolloWeb.Services
             }
 
             return await GetFacturasConDetalle(facturaInsertada.No_Factura);
+        }
+
+        public async Task<List<FacturaConDetalleWithData>> GetFacturasToday()
+        {
+            using var conexion = new SqlConnection(ConnectionString);
+            List<FacturaConDetalleWithData> facturaConDetalles = new List<FacturaConDetalleWithData>();
+            List<Factura> facturas = (await conexion.QueryAsync<Factura>("SP_GetFacturasToday", commandType: CommandType.StoredProcedure)).ToList();
+
+            if (facturas.Count() > 0)
+            {
+                foreach (var fac in facturas)
+                {
+                    List<DetalleWithDataDTO> detalles = (await conexion.QueryAsync<DetalleWithDataDTO>("Sp_VerDetallesByIDwhithProducto", new { id = fac.No_Factura }, commandType: CommandType.StoredProcedure))
+                    .ToList();
+
+                    facturaConDetalles.Add(new FacturaConDetalleWithData(fac, detalles));
+                }
+            }
+            return facturaConDetalles;
         }
     }
 }

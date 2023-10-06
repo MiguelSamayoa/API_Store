@@ -18,7 +18,6 @@ namespace DesarrolloWeb
                 .ForMember(cliente => cliente.dpi, op => op.MapFrom(PersonaDpi))
                 .ForMember(cliente => cliente.Correo, op => op.MapFrom(PersonaCorreo))
                 .ForMember(cliente => cliente.Telefono, op => op.MapFrom(PersonaTelefono));
-
             CreateMap<Producto, ProductoOutDTO>()
                 .ForMember(p => p.id, op => op.MapFrom(ProductoId))
                 .ForMember(p => p.nombre, op => op.MapFrom(ProductoNombre))

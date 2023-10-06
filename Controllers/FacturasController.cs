@@ -59,5 +59,13 @@ namespace DesarrolloWeb.Controllers
             return factura;
         }
 
+        [HttpGet("Today")]
+        public async Task<ActionResult<List<FacturaConDetalleWithData>>> GetFacturasToday()
+        {
+            List<FacturaConDetalleWithData> facturas = await facturasServices.GetFacturasToday();
+
+            if (facturas.Count == 0) return NotFound();
+            return Ok(facturas);
+        }
     }
 }
