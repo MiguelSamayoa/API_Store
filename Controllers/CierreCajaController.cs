@@ -4,6 +4,8 @@ using DesarrolloWeb.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using Microsoft.AspNetCore.Components.Forms;
+using DesarrolloWeb.DTOs;
+using DesarrolloWeb.Services;
 
 namespace DesarrolloWeb.Controllers
 {
@@ -11,58 +13,32 @@ namespace DesarrolloWeb.Controllers
     [ApiController]
     public class CierreCajaController :ControllerBase
     {
-        private readonly string connectionString;
+        private readonly ICierreCajaServices cierreCajaServices;
 
-        public CierreCajaController(IConfiguration configuration)
+        public CierreCajaController(ICierreCajaServices CierreCajaService)
         {
-            connectionString = configuration.GetConnectionString("DefaultConnection");
+            cierreCajaServices = CierreCajaService;
         }
 
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AperturaCaja>>> GetCliente()
+        public async Task<ActionResult<IEnumerable<CierreCaja>>> GetCliente()
         {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
+            List<CierreCaja> lista = await cierreCajaServices.GetCierreCajas();
 
-                var cierres = connection.Query<AperturaCaja>("sp_VerCierres", commandType: CommandType.StoredProcedure).ToList();
+            if (lista == null) return NotFound("soy gay xd");
 
-                if (cierres == null || cierres.Count == 0)
-                {
-                    return NotFound();
-                }
-
-                return cierres;
-            }
+            return Ok(lista);
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostCierreCaja(CierreCaja cierreCaja)
+        public async Task<ActionResult> PostCierreCaja(CierreCajaDTO cierreCaja)
         {
-            try
-            {
-                using (var connection = new SqlConnection(connectionString))
-                {
-                    await connection.OpenAsync();
+            CierreCaja cierre = await cierreCajaServices.PostCierreCaja(cierreCaja);
 
-                    var parameters = new
-                    {
-                        Id_Empleado = cierreCaja.Id_Empleado,
-                        Fecha_Hora = cierreCaja.Fecha_Hora,
-                        Saldo = cierreCaja.Saldo,
-                        Id_apertura = cierreCaja.Id_apertura
-                    };
+            if (cierre == null) return NotFound("Not found, sorry psd, i´m gay");
 
-                    await connection.ExecuteAsync("sp_Cierre_Caja", parameters, commandType: CommandType.StoredProcedure);
-
-                    return Ok();
-                }
-            }
-            catch (Exception ex)
-            {
-                // Manejo de errores
-                return StatusCode(500, ex.Message);
-            }
+            return Ok(cierre);
         }
 
 

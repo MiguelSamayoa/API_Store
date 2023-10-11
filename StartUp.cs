@@ -42,6 +42,8 @@ namespace DesarrolloWeb
             services.AddSingleton<IMonedaServices, MonedaServicesWhitDapper>();
             services.AddSingleton<IPagoServices, PagoServicesWhitDapper>();
             services.AddSingleton<IClienteServices, ClienteServicesWithDapper>();
+            services.AddSingleton<ICierreCajaServices, CierreCajaServicesWithDapper>();
+            services.AddSingleton<IDevolucion, DevolucionServicesWithDapper>();
             services.AddAutoMapper(typeof(StartUp));
             services.AddSwaggerGen();
         }

@@ -21,6 +21,7 @@ namespace DesarrolloWeb.Services
             ConnectionString = configuracion.GetConnectionString("DefaultConnection");
         }
 
+
         public async Task<List<AperturaCaja>> GetAperturaCaja()
         {
             using var conexion = new SqlConnection(ConnectionString);
@@ -40,7 +41,7 @@ namespace DesarrolloWeb.Services
             using var conexion = new SqlConnection(ConnectionString);
             conexion.Open();
 
-            AperturaCaja apertura = ( await conexion.QueryAsync<AperturaCaja>("sp_AperturaCaja", Apertura, commandType: CommandType.StoredProcedure) ).FirstOrDefault();
+            AperturaCaja apertura = (await conexion.QueryAsync<AperturaCaja>("sp_AperturaCaja", Apertura, commandType: CommandType.StoredProcedure)).FirstOrDefault();
 
             return apertura;
         }

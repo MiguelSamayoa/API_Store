@@ -34,7 +34,7 @@ namespace DesarrolloWeb.Controllers
 		{
 			AperturaCaja apertura = await aperturaServices.PostApertura(aperturaCaja);
 
-			if(apertura == null) return NotFound("Chinga tu madre");
+			if(apertura == null) return NotFound("Not found, sorry");
 
 			return Ok(apertura);
         }
