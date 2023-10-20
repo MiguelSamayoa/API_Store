@@ -46,18 +46,4 @@ namespace DesarrolloWeb.Services
             return apertura;
         }
     }
-
-
-    public class AperturaCajaServiceswithEntity : IAperturaCajaServices
-    {
-        public Task<List<AperturaCaja>> GetAperturaCaja()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<AperturaCaja> PostApertura(AperturaCajaDTO Apertura)
-        {
-            throw new NotImplementedException();
-        }
-    }
 }

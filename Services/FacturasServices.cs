@@ -11,7 +11,7 @@ namespace DesarrolloWeb.Services
     public interface IFacturasServices
     {
         public Task<List<Factura>> GetFacturas();
-        public Task<List<FacturaConDetalle>> GetFacturasConDetalle();
+        public Task<List<FacturaConDetalleWithData>> GetFacturasConDetalle();
         public Task<Factura> GetFacturas(int id);
         public Task<FacturaConDetalleWithData> GetFacturasConDetalle(int id);
 
@@ -53,18 +53,20 @@ namespace DesarrolloWeb.Services
             return facturas;
         }
 
-        public async Task<List<FacturaConDetalle>> GetFacturasConDetalle()
+        public async Task<List<FacturaConDetalleWithData>> GetFacturasConDetalle()
         {
             using var conexion = new SqlConnection(ConnectionString);
-            List<FacturaConDetalle> facturaConDetalles = new List<FacturaConDetalle>();
+            List<FacturaConDetalleWithData> facturaConDetalles = new List<FacturaConDetalleWithData>();
             List<Factura> facturas = (await conexion.QueryAsync<Factura>("select * from Factura")).ToList();
-            List<DetalleFactura> detalles = (await conexion.QueryAsync<DetalleFactura>("select * from Detalle_Factura")).ToList();
+
 
             foreach(var factura in facturas)
             {
-                List<DetalleFactura> detalleFactura = detalles.Where( det => det.No_Factura == factura.No_Factura ).ToList();
-                
-                if(detalleFactura.Count > 0) facturaConDetalles.Add(new FacturaConDetalle(factura, detalleFactura));
+                List<DetalleWithDataDTO> detalles = (await conexion.QueryAsync<DetalleWithDataDTO>("Sp_VerDetallesByIDwhithProducto",
+                    new { id = factura.No_Factura }, commandType: CommandType.StoredProcedure))
+                    .ToList();
+
+                if (detalles.Count > 0) facturaConDetalles.Add(new FacturaConDetalleWithData(factura, detalles));
             }
             return facturaConDetalles;
         }
@@ -136,6 +138,10 @@ namespace DesarrolloWeb.Services
 
             return await GetFacturasConDetalle(facturaInsertada.No_Factura);
         }
+
+
+
+
 
         public async Task<List<FacturaConDetalleWithData>> GetFacturasToday()
         {

@@ -32,13 +32,10 @@ namespace DesarrolloWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostCierreCaja(CierreCajaDTO cierreCaja)
+        public async void PostCierreCaja(CierreCajaDTO cierreCaja)
         {
-            CierreCaja cierre = await cierreCajaServices.PostCierreCaja(cierreCaja);
-
-            if (cierre == null) return NotFound("Not found, sorry psd, i´m gay");
-
-            return Ok(cierre);
+            cierreCajaServices.PostCierreCaja(cierreCaja);
+            
         }
 
 
