@@ -35,9 +35,9 @@ namespace DesarrolloWeb.Controllers
         }
 
         [HttpGet("WithDetalle")]
-        public async Task<ActionResult<List<FacturaConDetalle>>> GetFacturasWithDetalle()
+        public async Task<ActionResult<List<FacturaConDetalleWithData>>> GetFacturasWithDetalle()
         {
-            List<FacturaConDetalle> facturas = await facturasServices.GetFacturasConDetalle();
+            List<FacturaConDetalleWithData> facturas = await facturasServices.GetFacturasConDetalle();
 
             if (facturas.Count == 0) return NotFound();
             return Ok(facturas);

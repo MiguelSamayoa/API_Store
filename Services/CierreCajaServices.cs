@@ -8,7 +8,7 @@ namespace DesarrolloWeb.Services
 {
     public interface ICierreCajaServices {
         public Task<List<CierreCaja>> GetCierreCajas();
-        public Task<CierreCaja> PostCierreCaja(CierreCajaDTO CierreCaja);
+        public void PostCierreCaja(CierreCajaDTO CierreCaja);
     }
     public class CierreCajaServicesWithDapper : ICierreCajaServices
     {
@@ -32,14 +32,12 @@ namespace DesarrolloWeb.Services
         }
 
 
-        public async Task<CierreCaja> PostCierreCaja(CierreCajaDTO CierreCaja)
+        public async void PostCierreCaja(CierreCajaDTO CierreCaja)
         {
             using var conexion = new SqlConnection(ConnectionString);
             conexion.Open();
 
             CierreCaja cierre = (await conexion.QueryAsync<CierreCaja>("sp_Cierre_Caja", CierreCaja, commandType: CommandType.StoredProcedure)).FirstOrDefault();
-
-            return cierre;
         }
     }
 } 
