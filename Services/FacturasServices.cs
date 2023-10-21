@@ -111,14 +111,31 @@ namespace DesarrolloWeb.Services
                 i += j.precio_Producto * item.Cantidad;
             }
 
-            var parametros = new
+            Factura facturaInsertada;
+            if (Factura.factura.Descuento)
             {
-                Cliente = Factura.factura.id_cliente,
-                Empleado = Factura.factura.Id_Empleado,
-                Serie = GenerateRandomAlphaNumericString(10),
-                CostoTotal = i
-            };
-            Factura facturaInsertada = (await conexion.QueryAsync<Factura>("SpInsertarFactura", parametros, commandType: CommandType.StoredProcedure)).First();
+                var parametros = new
+                {
+                    Cliente = Factura.factura.id_cliente,
+                    Empleado = Factura.factura.Id_Empleado,
+                    Serie = GenerateRandomAlphaNumericString(10),
+                    CostoTotal = i,
+                    Descuento = true
+                };
+                facturaInsertada = (await conexion.QueryAsync<Factura>("SpInsertarFactura", parametros, commandType: CommandType.StoredProcedure)).First();
+            }
+            else
+            {
+                var parametros = new
+                {
+                    Cliente = Factura.factura.id_cliente,
+                    Empleado = Factura.factura.Id_Empleado,
+                    Serie = GenerateRandomAlphaNumericString(10),
+                    CostoTotal = i
+                };
+                facturaInsertada = (await conexion.QueryAsync<Factura>("SpInsertarFactura", parametros, commandType: CommandType.StoredProcedure)).First();
+            }
+            
 
             foreach (var item in Factura.Detalles)
             {
