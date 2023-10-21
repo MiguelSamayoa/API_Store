@@ -19,6 +19,22 @@ namespace DesarrolloWeb.DTOs
     {
         public int id_cliente { get; set; }
         public int Id_Empleado { get; set; }
+        public Boolean Descuento { get; set; }
+
+        public CreacionFacturaDTO() { }
+
+        public CreacionFacturaDTO( int id_cliente, int Id_Empleado )
+        {
+            this.id_cliente = id_cliente;
+            this.Id_Empleado = Id_Empleado;
+        }
+
+        public CreacionFacturaDTO(int id_cliente, int Id_Empleado, Boolean Descuento = false)
+        {
+            this.id_cliente = id_cliente;
+            this.Id_Empleado = Id_Empleado;
+            this.Descuento = Descuento;
+        }
     }
 
     public class CreacionDetalleDTO

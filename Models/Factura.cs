@@ -13,5 +13,7 @@ namespace DesarrolloWeb.Models
         public int Id_Empleado { get; set; }
         public DateTime Fecha { get; set; }
         public decimal Total { get; set; }
+        public bool Descuento { get; set; }
+        public decimal Total_SinDescuento { get; set; }
     }
 }
